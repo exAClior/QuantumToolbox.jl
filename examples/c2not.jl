@@ -1,7 +1,8 @@
+using Pkg; Pkg.activate("examples")
 using QuantumToolbox, LinearAlgebra, SparseArrays
 using Optim
 # import Mooncake
-import Enzyme
+# import Enzyme
 import Zygote
 using SciMLSensitivity
 import DifferentiationInterface as DI
@@ -29,7 +30,7 @@ function make_system_params(omega_r, omega_max, Dta, V_dd, V_vdws, tau_c, tau_p,
     )
 end
 
-https://discourse.julialang.org/t/sensitivity-of-an-odeproblem-defined-by-another-package-quantumtoolbox/129654/5?u=exaclior
+# https://discourse.julialang.org/t/sensitivity-of-an-odeproblem-defined-by-another-package-quantumtoolbox/129654/5?u=exaclior
 function make_loss(Hnhermitian, tlist, c_ops, init_states, out_states)
     # https://discourse.julialang.org/t/automatic-differentiation-of-quantum-master-equation-using-zygote/127715/3
     function loss(pulse_params)
@@ -145,9 +146,6 @@ function main(; omega_r, omega_max, Dta, V_dd, V_vdws, tau_c, tau_p, tau_R, nste
         br_a1=0.5, br_b1=0.0, br_c1=0.1,
         br_a2=0.5, br_b2=0.0, br_c2=0.1
     )
-    # backend = DI.AutoMooncake(; config=nothing)
-    # backend = DI.AutoZygote()
-    backend  = DI.AutoEnzyme(;function_annotation=Enzyme.Duplicated)
 
     f = make_loss(Hnhermitian, tlist, c_ops, [
             init_11, init_12, init_21, init_22,
